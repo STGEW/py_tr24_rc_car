@@ -1,6 +1,6 @@
 # Installation of Micropython interpreter to the Raspberry pi PICO W
 
-1) Download an fw from the website https://micropython.org/download/RPI_PICO_W/. I'll download a version 1.24.1
+1) Download an fw from the website https://micropython.org/download/RPI_PICO/. I'll download a version 1.24.1
 2) Interpreter can be uploaded in the same way as a 'normal' fw. Hold BOOTSEL btn and connect usb cable. You'll see a directory is mounted into your FS
 3) just drag and drop a firmware to that directory.
 4) Disconnect the cable

@@ -1,17 +1,4 @@
-######### CONSTANTS
-
-# Motor states
-FORWARD = 1
-OFF = 2
-REVERSE = 3
-BRAKE = 4
-
-# Motor driver
-DRIVER_MAX_VALUE = 65535
-DRIVER_COEF = DRIVER_MAX_VALUE / 100
-
 ######## PINS
-
 # motor driver pins
 AI1_PIN = 6
 AI2_PIN = 7
@@ -32,35 +19,37 @@ MISO_PIN = 16
 CE_PIN = 20
 CSN_PIN = 21
 
+RF_CHANNEL = 124
+RF_PAYLOAD = 32
 
 # joysticks
 X_AXIS_PIN = 26
 Y_AXIS_PIN = 27
 
+# Main loop
+# 50 MSEC -> 20 Hz
+ML_PERIOD_MSEC = 50
+ML_SLEEP_MSEC = 5
+RF_TIMEOUT_MSEC = 500
 
-# conversions:
-DEAD_ZONE = 200
-DEAD_ZONE_START = 2048 - DEAD_ZONE
-DEAD_ZONE_END = 2048 + DEAD_ZONE
-TURN_COEF = 0.60    # this coefficient is chosen after several experiments
-ADC_TO_PERCENTAGE = 100.0 / 2048.0
+# Addresses are in little-endian format. They correspond to big-endian
+# 0xf0f0f0f0e1, 0xf0f0f0f0d2
+PIPES = (b"\xe1\xf0\xf0\xf0\xf0", b"\xd2\xf0\xf0\xf0\xf0")
 
-
-# general
-LOOP_PERIOD_USEC = 50000
-RC_LOOP_PERIOD_USEC = 100000
-RF_TIMEOUT_MSEC = 1500
-UNDER_DEBUG = False
-
-
-# shared data types:
 class Driver:
-    direction_A = OFF
-    direction_B = OFF
-    duty_cycle_A = 0
-    duty_cycle_B = 0
+    FORWARD = 1
+    OFF = 2
+    REVERSE = 3
+    BRAKE = 4
 
+    def __init__(self):
+        self.direction_A = self.OFF
+        self.direction_B = self.OFF
+        self.duty_cycle_A = 0
+        self.duty_cycle_B = 0
 
 class EnginesPwr:
-    left = 0        # left -100 ... 100
-    right = 0       # right -100 ... 100
+    def __init__(self):
+        # values are in range -100 ... 100
+        self.left = 0        
+        self.right = 0

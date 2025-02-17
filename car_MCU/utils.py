@@ -1,10 +1,13 @@
-from time import ticks_diff, ticks_ms
+from consts import Driver
 
-from consts import DEAD_ZONE_START, DEAD_ZONE_END
-from consts import TURN_COEF, DRIVER_COEF
-from consts import FORWARD, OFF, REVERSE, BRAKE
-from consts import ADC_TO_PERCENTAGE
-from consts import RF_TIMEOUT_MSEC
+DRIVER_MAX_VALUE = 65535
+DRIVER_COEF = DRIVER_MAX_VALUE / 100
+
+DEAD_ZONE = 200
+DEAD_ZONE_START = 2048 - DEAD_ZONE
+DEAD_ZONE_END = 2048 + DEAD_ZONE
+TURN_COEF = 0.60    # this coefficient is chosen after several experiments
+ADC_TO_PERCENTAGE = 100.0 / 2048.0
 
 
 def conv_joy_to_engines_pwr(j_x, j_y, pwr):
@@ -63,37 +66,16 @@ def conv_engines_pwr_to_driver(pwr, d):
     """
     def helper(e):
         if e == 0:
-            direction = OFF
+            direction = Driver.OFF
             duty = 0
         elif e > 0:
-            direction = FORWARD
+            direction = Driver.FORWARD
             duty = e * DRIVER_COEF
         elif e < 0:
-            direction = REVERSE
+            direction = Driver.REVERSE
             duty = -1 * e * DRIVER_COEF
         return int(duty), direction
 
     d.duty_cycle_A, d.direction_A = helper(pwr.left)
     d.duty_cycle_B, d.direction_B = helper(pwr.right)
 
-
-def timeout_protection(d, last_rf_rx_tick):
-    """
-    Protects us from losing the connection to RC
-    Arguments:
-    - d (Driver) - a class with driver data
-    - last_rf_rx_tick - a msec tick when last RF package
-       was received
-    """
-    cur_tick = ticks_ms()
-    # print(f"Cur: {cur_tick} last: {last_rf_rx_tick}")
-    if ticks_diff(cur_tick, last_rf_rx_tick) > RF_TIMEOUT_MSEC:
-        # print("Timeout protection")
-        d.direction_A = OFF
-        d.direction_B = OFF
-        d.duty_cycle_A = 0
-        d.duty_cycle_B = 0
-        return True
-    else:
-        # print("!!!NO Timeout protection")
-        return False

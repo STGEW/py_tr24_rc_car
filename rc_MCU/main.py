@@ -28,7 +28,6 @@ class MainLoop:
 
     def _loop(self):
         x, y = run_joystick_task()
-        # x, y = 2000, 3000
         print(f'joystick: {x} {y}')
         res = run_rf_tx(x, y)
         if res:

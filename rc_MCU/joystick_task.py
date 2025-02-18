@@ -9,7 +9,7 @@ adc_y = ADC(Pin(Y_AXIS_PIN)) # 0-65535
 def run_joystick_task():
     # micropython returns us 16 bits value. However
     # since I want to share us much logic as I can with C code
-    # it's easier to convert it ti 12 bits (in C we have 12 bits from ADC)
+    # it's easier to convert it to 12 bits (in C we have 12 bits from ADC)
     # and to keep all the originally designed conversions
     x = convert_16bit_to_12bit(adc_x.read_u16())
     y = convert_16bit_to_12bit(adc_y.read_u16())

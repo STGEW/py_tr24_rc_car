@@ -32,6 +32,7 @@ def run_motor_driver_task(driver):
     A_pwm.duty_u16(driver.duty_cycle_A)
     _set_motor_direction(BI1_gpio, BI2_gpio, driver.direction_B)
     B_pwm.duty_u16(driver.duty_cycle_B)
+    # print(f'Driver duty cycle A: {driver.duty_cycle_A} B: {driver.duty_cycle_B}')
 
 
 def _set_motor_direction(i1_pin, i2_pin, direction):

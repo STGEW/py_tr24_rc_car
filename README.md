@@ -20,7 +20,7 @@ cd micropython-lib/micropython/drivers/radio/nrf24l01
 mpremote a1 cp ./nrf24l01.py :
 ```
 
-Or you can assign the path to the directory <strong>micropython-lib</strong> to a variable <strong>$MICROLIB_PAT</strong> and use it later.
+Or you can assign the path to the directory <strong>micropython-lib</strong> to a variable <strong>$MICROLIB_PATH</strong> and use it later.
 
 ## useful commands
 ```
@@ -49,6 +49,5 @@ mpremote a0 cp $MICROLIB_PATH/micropython/drivers/radio/nrf24l01/nrf24l01.py :
 mpremote a0 cp ../consts.py : && \
 mpremote a0 cp ../rf_task.py : && \
 mpremote a0 cp main.py : && \
-mpremote a0 cp joystick_task.py : 
 mpremote a0 cp $MICROLIB_PATH/micropython/drivers/radio/nrf24l01/nrf24l01.py :
 ```

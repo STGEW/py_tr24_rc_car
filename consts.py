@@ -30,6 +30,8 @@ Y_AXIS_PIN = 27
 # 50 MSEC -> 20 Hz
 ML_PERIOD_MSEC = 50
 ML_SLEEP_MSEC = 5
+
+# our protection against losing the connection
 RF_TIMEOUT_MSEC = 500
 
 # Addresses are in little-endian format. They correspond to big-endian

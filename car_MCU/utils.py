@@ -1,21 +1,26 @@
 from consts import Driver
 
-DRIVER_MAX_VALUE = 65535
+CENTER_OF_16_BITS = 32768
+MAX_16_BITS = 65535
+
+DRIVER_MAX_VALUE = MAX_16_BITS
 DRIVER_COEF = DRIVER_MAX_VALUE / 100
 
-DEAD_ZONE = 200
-DEAD_ZONE_START = 2048 - DEAD_ZONE
-DEAD_ZONE_END = 2048 + DEAD_ZONE
-TURN_COEF = 0.60    # this coefficient is chosen after several experiments
-ADC_TO_PERCENTAGE = 100.0 / 2048.0
+DEAD_ZONE = 0.1 * CENTER_OF_16_BITS
+DEAD_ZONE_START = CENTER_OF_16_BITS - DEAD_ZONE
+DEAD_ZONE_END = CENTER_OF_16_BITS + DEAD_ZONE
+
+# this coefficient is carefully chosen after several experiments
+TURN_COEF = 0.60
+ADC_TO_PERCENTAGE = 100.0 / CENTER_OF_16_BITS
 
 
 def conv_joy_to_engines_pwr(j_x, j_y, pwr):
     """
     Convert joystick values to engines pwr (-100..100) for each side
     Arguments:
-        j_x (0...4096) - x axis from joystick
-        j_y (0...4096) - y axis from joystick
+        j_x (0...65535) - x axis from joystick
+        j_y (0...65535) - y axis from joystick
         pwr (EnginesPwr) - engines pwr class
     """
 
@@ -27,14 +32,14 @@ def conv_joy_to_engines_pwr(j_x, j_y, pwr):
     else:
         forward = j_x
         # centering
-        forward -= 2048
+        forward -= CENTER_OF_16_BITS
 
     if j_y >= DEAD_ZONE_START and j_y <= DEAD_ZONE_END:
         turn = 0
     else:
         turn = j_y
         # centering
-        turn -= 2048
+        turn -= CENTER_OF_16_BITS
 
     forward = forward * ADC_TO_PERCENTAGE
     turn = turn * ADC_TO_PERCENTAGE
@@ -78,4 +83,3 @@ def conv_engines_pwr_to_driver(pwr, d):
 
     d.duty_cycle_A, d.direction_A = helper(pwr.left)
     d.duty_cycle_B, d.direction_B = helper(pwr.right)
-

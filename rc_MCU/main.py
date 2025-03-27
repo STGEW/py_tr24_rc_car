@@ -1,10 +1,14 @@
-from machine import UART, Pin
+from machine import ADC, UART, Pin
 import os
 
+from consts import X_AXIS_PIN, Y_AXIS_PIN
 from consts import BOOT_LED_PIN, RADIO_LED_PIN
 
-from joystick_task import run_joystick_task
 from rf_task import init_rf, run_rf_tx
+
+
+adc_x = ADC(Pin(X_AXIS_PIN)) # 0-65535
+adc_y = ADC(Pin(Y_AXIS_PIN)) # 0-65535
 
 
 class MainLoop:
@@ -27,7 +31,8 @@ class MainLoop:
             self._loop()
 
     def _loop(self):
-        x, y = run_joystick_task()
+        x = adc_x.read_u16()
+        y = adc_y.read_u16()
         print(f'joystick: {x} {y}')
         res = run_rf_tx(x, y)
         if res:
